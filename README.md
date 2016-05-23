@@ -1,5 +1,8 @@
-# sense-tube-map-extension
+# Sense Tube Map Extension
 ###A Visualisation Extension for Qlik Sense that uses the HTML5 Canvas based [tubemap-viz](https://github.com/websy85/tubemap-viz) library that lets you represent data in the style of a Tube/Metro map.
+
+The map is the brainchild of Adam Bellerby and part of an internal Qlik initiative that visualises 'Learning Pathways' for Qlik employees.
+
 The extension is a work in progress but feel free to use, abuse and contribute. Enjoy.
 
 ####Installation
