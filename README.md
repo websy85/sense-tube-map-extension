@@ -5,6 +5,8 @@ The map is the brainchild of Adam Bellerby and part of an internal Qlik initiati
 
 The extension is a work in progress but feel free to use, abuse and contribute. Enjoy.
 
+If you'd like to use the same visualisation on top of the Engine API or in any other web environment outside of the Qlik Sense client framework then you can use the core [tubemap-viz](https://github.com/websy85/tubemap-viz) library.
+
 ####Installation
 1. Download the built extension **[here](https://github.com/websy85/sense-tube-map-extension/raw/master/build/sense-tube-map.zip)**.
 2. Import the extension into Qlik Sense Enterprise **or** extract the files into the Qlik Sense Desktop extensions directory.
