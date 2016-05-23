@@ -1,0 +1,24 @@
+{
+  "name": "sense-tube-map",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/websy85/sense-tube-map.git"
+  },
+  "author": "websy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/websy85/sense-tube-map/issues"
+  },
+  "homepage": "https://github.com/websy85/sense-tube-map#readme",
+  "dependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-includes": "^1.0.0"
+  }
+}
