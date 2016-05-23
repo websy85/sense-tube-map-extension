@@ -6,9 +6,9 @@ The map is the brainchild of Adam Bellerby and part of an internal Qlik initiati
 The extension is a work in progress but feel free to use, abuse and contribute. Enjoy.
 
 ####Installation
-1. Download the built extension [here](https://github.com/websy85/sense-tube-map-extension/raw/master/build/sense-tube-map.zip).
+1. Download the built extension **[here](https://github.com/websy85/sense-tube-map-extension/raw/master/build/sense-tube-map.zip)**.
 2. Import the extension into Qlik Sense Enterprise **or** extract the files into the Qlik Sense Desktop extensions directory.
-3. A sample app can be found [here](https://github.com/websy85/sense-tube-map-extension/raw/master/TubeMapExample.qvf).
+3. A sample app can be found **[here](https://github.com/websy85/sense-tube-map-extension/raw/master/TubeMapExample.qvf)**.
 
 ####Data Requirements
 The map can handle the following Data
