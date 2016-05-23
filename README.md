@@ -12,11 +12,11 @@ The extension is a work in progress but feel free to use, abuse and contribute. 
 
 ####Data Requirements
 The map can handle the following Data
-*Line (required) - A dimension containing the name of your 'line' data
-*Station (required) - A dimension containing the name of your 'statin' data
-*Colour - A dimension containing the colour to be used for the line. If omitted default colours will be used (up to a maximum of 5 lines)
-*DistanceToNextStation - A dimension containing the distance to the next station. A scale will be calculated based on the min and max values found in this column. If omitted station will be equidistant.
-*Station Size - A measure that can be used to change the size of the station.
+* Line (required) - A dimension containing the name of your 'line' data
+* Station (required) - A dimension containing the name of your 'statin' data
+* Colour - A dimension containing the colour to be used for the line. If omitted default colours will be used (up to a maximum of 5 lines)
+* DistanceToNextStation - A dimension containing the distance to the next station. A scale will be calculated based on the min and max values found in this column. If omitted station will be equidistant.
+* Station Size - A measure that can be used to change the size of the station.
 
 For further information and documentation please see [tubemap-viz](https://github.com/websy85/tubemap-viz).
 
