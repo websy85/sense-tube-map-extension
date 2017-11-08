@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/websy85/sense-tube-map#readme",
   "dependencies": {
-    "grunt": "^1.0.1",
+    "grunt": "^1.0.1",    
     "grunt-contrib-watch": "^1.0.0",
     "grunt-includes": "^1.0.0"
   }

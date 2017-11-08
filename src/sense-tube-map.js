@@ -1,18 +1,13 @@
 define( [
+	"qlik",
 	"./tube-map-viz.min"
-],
-function ( T ) {
 
+],
+function ( qlik ) {
 	return {
 		initialProperties: {
-			version: 1.0,
-      qInfo: {
-        qType: "Chart"
-      },
 			qHyperCubeDef: {
-        qStateName: "$",
-				qDimensions: [],
-				qMeasures: []
+        qStateName: "$"
 			}
 		},
 		definition: {
@@ -30,7 +25,8 @@ function ( T ) {
       }
     },
     controller: function($scope){
-      $scope.baseObjectHandle;
+			$scope.currApp = qlik.currApp();
+      $scope.baseObject;
       $scope.baseObjectLayout;
       $scope.dimensionCount;
       $scope.measureCount;
@@ -40,7 +36,10 @@ function ( T ) {
         stationThickness: 10,
         lineWidth: 8,
         lineSpacing: 8,
-        fontSize: 14
+        fontSize: 14,
+				stationClicked: function(station){
+					$scope.$parent.backendApi.selectValues(1, [station.elemNum], true)
+				}
       });
       $scope.origHandle = $scope.$parent.backendApi.model.handle;
       include "./copy-object.js"
@@ -51,11 +50,13 @@ function ( T ) {
       var that = this;
       if(this._inEditState===true){
         element[0].style.zIndex = -1;
+				element[0].parentElement.parentElement.parentElement.style.backgroundColor = "transparent";
       }
       else {
         element[0].style.zIndex = null;
+				element[0].parentElement.parentElement.parentElement.style.backgroundColor = "inherit";
       }
-      if(this.$scope.baseObjectHandle && this._inEditState===false){
+      if(this.$scope.baseObject && this._inEditState===false){
         this.$scope.renderMap(element, layout);
       }
       else{

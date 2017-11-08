@@ -1,7 +1,7 @@
 $scope.renderMap = function(element, layout){
   var lines = [];
   var linesLoaded = [];
-  $scope.baseObjectLayout.qHyperCube.qDataPages.forEach(function(page){
+  layout.baseHyperCube.qHyperCube.qDataPages.forEach(function(page){
     page.qMatrix.forEach(function(row){
       var line;
       if(linesLoaded.indexOf(row[0].qText)!=-1){
@@ -22,6 +22,7 @@ $scope.renderMap = function(element, layout){
       if(line && row[1].qText!="-"){
         var station = {
           name: row[1].qText,
+          elemNum: row[1].qElemNumber,
           status: 0
         }
         if(row[3] && $scope.dimensionCount > 3){
@@ -31,7 +32,7 @@ $scope.renderMap = function(element, layout){
       }
     });
   });
-  $scope.getAllData(layout, $scope.origHandle, 0, function(layout){
+  $scope.getAllData("/qHyperCubeDef", layout.qHyperCube, 0, function(){
       var processedStations = [];
       var minVal = 1, maxVal = 1, scale = 1, maxMultiplier = 3, shouldScale = false;
       if($scope.measureCount > 0){

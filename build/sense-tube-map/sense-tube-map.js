@@ -1,18 +1,13 @@
 define( [
+	"qlik",
 	"./tube-map-viz.min"
-],
-function ( T ) {
 
+],
+function ( qlik ) {
 	return {
 		initialProperties: {
-			version: 1.0,
-      qInfo: {
-        qType: "Chart"
-      },
 			qHyperCubeDef: {
-        qStateName: "$",
-				qDimensions: [],
-				qMeasures: []
+        qStateName: "$"
 			}
 		},
 		definition: {
@@ -30,7 +25,8 @@ function ( T ) {
       }
     },
     controller: function($scope){
-      $scope.baseObjectHandle;
+			$scope.currApp = qlik.currApp();
+      $scope.baseObject;
       $scope.baseObjectLayout;
       $scope.dimensionCount;
       $scope.measureCount;
@@ -40,48 +36,46 @@ function ( T ) {
         stationThickness: 10,
         lineWidth: 8,
         lineSpacing: 8,
-        fontSize: 14
+        fontSize: 14,
+				stationClicked: function(station){
+					$scope.$parent.backendApi.selectValues(1, [station.elemNum], true)
+				}
       });
       $scope.origHandle = $scope.$parent.backendApi.model.handle;
       $scope.copyObject = function(callbackFn){
-        $scope.session = $scope.$parent.backendApi.model.session;
-        var docHandle = $scope.session.currentApp.handle;
-        var dummyDef = {
-          qInfo:{
-            qType: "Chart"
-          }
-        }
         //create a new alternate state
-        $scope.session.rpc({handle: docHandle, method: "AddAlternateState", params:["TubeState"]}).then(function(response){
-          //create the base object that will contain all of the map data
-          $scope.session.rpc({handle: docHandle, method: "CreateSessionObject", params:[dummyDef]}).then(function(response){
-            $scope.baseObjectHandle = response.result.qReturn.qHandle;
-            var newId = response.result.qReturn.qGenericId;
-            $scope.session.rpc({handle: $scope.origHandle, method: "GetProperties", params:[]}).then(function(response){
-              var props = response.result.qProp;
-              props.qInfo.qId = newId;
-              $scope.session.rpc({handle: $scope.baseObjectHandle, method: "SetProperties", params:[props]}).then(function(response){
-                //put the base object against the alternate state
-                $scope.session.rpc({handle: $scope.baseObjectHandle, method: "ApplyPatches", params:[[{qPath:"/qHyperCubeDef/qStateName", qOp: "add", qValue: "\"TubeState\""}]]}).then(function(response){
-                  $scope.session.rpc({handle: $scope.baseObjectHandle, method: "GetLayout", params:[]}).then(function(response){
-                    $scope.baseObjectLayout = response.result.qLayout;
-                    $scope.dimensionCount = $scope.baseObjectLayout.qHyperCube.qDimensionInfo.length;
-                    $scope.measureCount = $scope.baseObjectLayout.qHyperCube.qMeasureInfo.length;
-                    $scope.getAllData($scope.baseObjectLayout, $scope.baseObjectHandle, 0, callbackFn);
-                  });
-                });
+        $scope.currApp.model.enigmaModel.addAlternateState("TubeState").then(function(response){
+          $scope.$parent.backendApi.model.getProperties().then(function(props){
+            var baseHyperCubeDef = {
+              qHyperCubeDef: cloneObject(props.qHyperCubeDef)
+            };
+            baseHyperCubeDef.qHyperCubeDef.qStateName = "TubeState";
+            props.baseHyperCube = baseHyperCubeDef;
+            $scope.$parent.backendApi.model.setProperties(props).then(function(response){
+              $scope.$parent.backendApi.model.getLayout().then(function(layout){
+                $scope.dimensionCount = props.qHyperCubeDef.qDimensions.length;
+                $scope.measureCount = props.qHyperCubeDef.qMeasures.length;
+                $scope.getAllData("/baseHyperCube/qHyperCubeDef", layout.baseHyperCube.qHyperCube, 0, callbackFn);
               });
             });
-          });
+          });    
         });
+
+        function cloneObject(inObj){
+          var outObj = {};
+          for (var key in inObj){
+            outObj[key] = inObj[key]
+          }
+          return outObj;
+        }
       }
 
-      $scope.getAllData = function(layout, handle, lastRow, callbackFn){
-        if(!layout.qHyperCube){
+      $scope.getAllData = function(path, hc, lastRow, callbackFn){
+        if(!hc){
           callbackFn.call();
         }
         if(lastRow==0){
-          layout.qHyperCube.qDataPages = [];
+          hc.qDataPages = [];
         }
         var pages = [{
           qTop: lastRow,
@@ -89,15 +83,16 @@ function ( T ) {
           qHeight: 100,
           qWidth: 10
         }];
-        $scope.session.rpc({handle: handle, method: "GetHyperCubeData", params: ["/qHyperCubeDef", pages]}).then(function(response){
-          var data = response.result.qDataPages[0];
+        // $scope.session.rpc({handle: handle, method: "GetHyperCubeData", params: ["/qHyperCubeDef", pages]}).then(function(response){
+        $scope.$parent.backendApi.model.getHyperCubeData(path, pages).then(function(pages){
+          var data = pages[0];
           lastRow+=data.qArea.qHeight;
-          layout.qHyperCube.qDataPages.push(data);
-          if(lastRow < layout.qHyperCube.qSize.qcy){
-            $scope.getAllData(layout, handle, lastRow, callbackFn);
+          hc.qDataPages.push(data);
+          if(lastRow < hc.qSize.qcy){
+            $scope.getAllData(path, hc, lastRow, callbackFn);
           }
           else{
-            callbackFn.call(null, layout);
+            callbackFn.call(null);
           }
         }).catch(function(err){
           console.log(err);
@@ -107,7 +102,7 @@ function ( T ) {
 			$scope.renderMap = function(element, layout){
 			  var lines = [];
 			  var linesLoaded = [];
-			  $scope.baseObjectLayout.qHyperCube.qDataPages.forEach(function(page){
+			  layout.baseHyperCube.qHyperCube.qDataPages.forEach(function(page){
 			    page.qMatrix.forEach(function(row){
 			      var line;
 			      if(linesLoaded.indexOf(row[0].qText)!=-1){
@@ -128,6 +123,7 @@ function ( T ) {
 			      if(line && row[1].qText!="-"){
 			        var station = {
 			          name: row[1].qText,
+			          elemNum: row[1].qElemNumber,
 			          status: 0
 			        }
 			        if(row[3] && $scope.dimensionCount > 3){
@@ -137,7 +133,7 @@ function ( T ) {
 			      }
 			    });
 			  });
-			  $scope.getAllData(layout, $scope.origHandle, 0, function(layout){
+			  $scope.getAllData("/qHyperCubeDef", layout.qHyperCube, 0, function(){
 			      var processedStations = [];
 			      var minVal = 1, maxVal = 1, scale = 1, maxMultiplier = 3, shouldScale = false;
 			      if($scope.measureCount > 0){
@@ -191,11 +187,13 @@ function ( T ) {
       var that = this;
       if(this._inEditState===true){
         element[0].style.zIndex = -1;
+				element[0].parentElement.parentElement.parentElement.style.backgroundColor = "transparent";
       }
       else {
         element[0].style.zIndex = null;
+				element[0].parentElement.parentElement.parentElement.style.backgroundColor = "inherit";
       }
-      if(this.$scope.baseObjectHandle && this._inEditState===false){
+      if(this.$scope.baseObject && this._inEditState===false){
         this.$scope.renderMap(element, layout);
       }
       else{

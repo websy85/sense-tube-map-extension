@@ -1,9 +1,9 @@
-$scope.getAllData = function(layout, handle, lastRow, callbackFn){
-  if(!layout.qHyperCube){
+$scope.getAllData = function(path, hc, lastRow, callbackFn){
+  if(!hc){
     callbackFn.call();
   }
   if(lastRow==0){
-    layout.qHyperCube.qDataPages = [];
+    hc.qDataPages = [];
   }
   var pages = [{
     qTop: lastRow,
@@ -11,15 +11,16 @@ $scope.getAllData = function(layout, handle, lastRow, callbackFn){
     qHeight: 100,
     qWidth: 10
   }];
-  $scope.session.rpc({handle: handle, method: "GetHyperCubeData", params: ["/qHyperCubeDef", pages]}).then(function(response){
-    var data = response.result.qDataPages[0];
+  // $scope.session.rpc({handle: handle, method: "GetHyperCubeData", params: ["/qHyperCubeDef", pages]}).then(function(response){
+  $scope.$parent.backendApi.model.getHyperCubeData(path, pages).then(function(pages){
+    var data = pages[0];
     lastRow+=data.qArea.qHeight;
-    layout.qHyperCube.qDataPages.push(data);
-    if(lastRow < layout.qHyperCube.qSize.qcy){
-      $scope.getAllData(layout, handle, lastRow, callbackFn);
+    hc.qDataPages.push(data);
+    if(lastRow < hc.qSize.qcy){
+      $scope.getAllData(path, hc, lastRow, callbackFn);
     }
     else{
-      callbackFn.call(null, layout);
+      callbackFn.call(null);
     }
   }).catch(function(err){
     console.log(err);

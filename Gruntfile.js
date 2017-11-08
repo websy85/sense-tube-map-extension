@@ -3,14 +3,14 @@ module.exports = function(grunt) {
     includes: {
       files:{
         src: ['sense-tube-map.js'],
-        dest: 'build',
+        dest: 'build/sense-tube-map',
         cwd: 'src'
       }
     },
     watch: {
       scripts: {
         files: ['src/**/*.js'], // which files to watch
-        tasks: ['includes','uglify'],
+        tasks: ['includes'],
         options: {
           nospawn: true,
           livereload: true
