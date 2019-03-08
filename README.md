@@ -1,5 +1,5 @@
 ## Sense Tube Map Extension
-###A Visualisation Extension for Qlik Sense that uses the HTML5 Canvas based [tubemap-viz](https://github.com/websy85/tubemap-viz) library to represent data in the style of a Tube/Metro map.
+### A Visualisation Extension for Qlik Sense that uses the HTML5 Canvas based [tubemap-viz](https://github.com/websy85/tubemap-viz) library to represent data in the style of a Tube/Metro map.
 
 The map is the brainchild of Adam Bellerby and part of an internal Qlik Knowledge and Learning initiative that visualises 'Learning Pathways' for Qlik employees.
 
@@ -7,12 +7,12 @@ The extension is a work in progress but feel free to use, abuse and contribute. 
 
 If you'd like to use the same visualisation on top of the Engine API or in any other web environment outside of the Qlik Sense client framework then you can use the core [tubemap-viz](https://github.com/websy85/tubemap-viz) library.
 
-####Installation
+#### Installation
 1. Download the built extension **[here](https://github.com/websy85/sense-tube-map-extension/raw/master/build/sense-tube-map.zip)**.
 2. Import the extension into Qlik Sense Enterprise **or** extract the files into the Qlik Sense Desktop extensions directory.
 3. A sample app can be found **[here](https://github.com/websy85/sense-tube-map-extension/raw/master/TubeMapExample.qvf)**.
 
-####Data Requirements
+#### Data Requirements
 The map can handle the following Data
 * **Line** (required) - A dimension containing the name of your 'line' data
 * **Station** (required) - A dimension containing the name of your 'statin' data
@@ -22,15 +22,15 @@ The map can handle the following Data
 
 For further information and documentation please see [tubemap-viz](https://github.com/websy85/tubemap-viz).
 
-####Examples
-#####Lines, Stations and Colours
+#### Examples
+##### Lines, Stations and Colours
 ![alt text](Standard.png "Standard Map")
 
-#####With selections
+##### With selections
 ![alt text](Selections.png "With Selections")
 
-#####Varying Distances
+##### Varying Distances
 ![alt text](StationDistance.png "Varying Distances")
 
-#####Station Size
+##### Station Size
 ![alt text](StationSize.png "Station Size")
