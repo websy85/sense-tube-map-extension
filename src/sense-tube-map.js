@@ -24,29 +24,35 @@ function ( qlik ) {
         }
       }
     },
-    controller: function($scope){
-			$scope.currApp = qlik.currApp();
-      $scope.baseObject;
-      $scope.baseObjectLayout;
-      $scope.dimensionCount;
-      $scope.measureCount;
-      $scope.session;
-      $scope.mapViz = new window.TubeMapViz({
+    mounted: function($element){
+			var that = this
+			this.$scope.ready = true
+			this.$scope.currApp = qlik.currApp();
+      this.$scope.baseObject;
+      this.$scope.baseObjectLayout;
+      this.$scope.dimensionCount;
+      this.$scope.measureCount;
+      this.$scope.session;
+      this.$scope.mapViz = new window.TubeMapViz({
         stationRadius: 15,
         stationThickness: 10,
         lineWidth: 8,
         lineSpacing: 8,
         fontSize: 14,
 				stationClicked: function(station){
-					$scope.$parent.backendApi.selectValues(1, [station.elemNum], true)
+					that.$scope.$parent.backendApi.selectValues(1, [station.elemNum], true)
 				}
       });
-      $scope.origHandle = $scope.$parent.backendApi.model.handle;
+      this.$scope.origHandle = this.$scope.$parent.backendApi.model.handle;
       include "./copy-object.js"
       include "./get-all-data.js"
 			include "./render.js"
     },
     paint: function(element, layout){
+			if (this.$scope.ready === false) {
+				return
+			}
+			this.$scope.ready = false
       var that = this;
       if(this._inEditState===true){
         element[0].style.zIndex = -1;

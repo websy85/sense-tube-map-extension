@@ -1,4 +1,4 @@
-$scope.renderMap = function(element, layout){
+that.$scope.renderMap = function(element, layout){
   var lines = [];
   var linesLoaded = [];
   layout.baseHyperCube.qHyperCube.qDataPages.forEach(function(page){
@@ -12,7 +12,7 @@ $scope.renderMap = function(element, layout){
           name: row[0].qText,
           stations: []
         }
-        if(row[2] && $scope.dimensionCount > 2){
+        if(row[2] && that.$scope.dimensionCount > 2){
           line.colour = row[2].qText;
         }
         lines.push(line);
@@ -25,17 +25,17 @@ $scope.renderMap = function(element, layout){
           elemNum: row[1].qElemNumber,
           status: 0
         }
-        if(row[3] && $scope.dimensionCount > 3){
+        if(row[3] && that.$scope.dimensionCount > 3){
           station.distanceToNext = parseInt(row[3].qText);
         }
         line.stations.push(station);
       }
     });
   });
-  $scope.getAllData("/qHyperCubeDef", layout.qHyperCube, 0, function(){
+  that.$scope.getAllData("/qHyperCubeDef", layout.qHyperCube, 0, function(){
       var processedStations = [];
       var minVal = 1, maxVal = 1, scale = 1, maxMultiplier = 3, shouldScale = false;
-      if($scope.measureCount > 0){
+      if(that.$scope.measureCount > 0){
         //we only use the first measure at the moment
         minVal = layout.qHyperCube.qMeasureInfo[0].qMin;
         maxVal = layout.qHyperCube.qMeasureInfo[0].qMax;
@@ -64,7 +64,7 @@ $scope.renderMap = function(element, layout){
                     line.stations[i].status = 1;
                     if(shouldScale){
                       line.stations[i].custom = {
-                        scale: 1 + (row[$scope.dimensionCount].qNum * scale)
+                        scale: 1 + (row[that.$scope.dimensionCount].qNum * scale)
                       }
                     }
                     processedStations.push(row[1].qText);
@@ -74,9 +74,7 @@ $scope.renderMap = function(element, layout){
             }
           }
         });
-      });
-      console.log(lines);
-      $scope.mapViz.render(lines, element[0]);
-
+      });      
+      that.$scope.mapViz.render(lines, element[0]);
     });
 };
