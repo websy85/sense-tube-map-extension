@@ -1,8 +1,6 @@
 ## Sense Tube Map Extension
 ### A Visualisation Extension for Qlik Sense that uses the HTML5 Canvas based [tubemap-viz](https://github.com/websy85/tubemap-viz) library to represent data in the style of a Tube/Metro map.
 
-The map is the brainchild of Adam Bellerby and part of an internal Qlik Knowledge and Learning initiative that visualises 'Learning Pathways' for Qlik employees.
-
 The extension is a work in progress but feel free to use, abuse and contribute. Enjoy.
 
 If you'd like to use the same visualisation on top of the Engine API or in any other web environment outside of the Qlik Sense client framework then you can use the core [tubemap-viz](https://github.com/websy85/tubemap-viz) library.
@@ -15,7 +13,7 @@ If you'd like to use the same visualisation on top of the Engine API or in any o
 #### Data Requirements
 The map can handle the following Data
 * **Line** (required) - A dimension containing the name of your 'line' data
-* **Station** (required) - A dimension containing the name of your 'statin' data
+* **Station** (required) - A dimension containing the name of your 'station' data
 * **Colour** - A dimension containing the colour to be used for the line. If omitted default colours will be used (up to a maximum of 5 lines)
 * **DistanceToNextStation** - A dimension containing the distance to the next station. A scale will be calculated based on the min and max values found in this column. If omitted station will be equidistant.
 * **StationSize** - A measure that can be used to change the size of the station.
